@@ -41,7 +41,9 @@ No paid services, paid APIs, paid libraries, or subscriptions.
 │   ├── modules/             empty slots for approved future modules
 │   └── styles/main.css
 ├── functions/api/health.js  Pages Function -> GET /api/health
-├── scripts/build.mjs        copies src/ and writes public/config.js
+├── scripts/build.mjs        copies src/ and writes public/config.js from .env
+├── scripts/deploy-pages.mjs deploys via wrangler using a temporary config that
+│                            carries .env values (temp config is never committed)
 ├── supabase/                config.toml, migrations/, seed.sql
 ├── tests/                   node:test checks
 ├── .env.example             environment variable documentation
@@ -85,7 +87,7 @@ http://localhost:8788. After editing files in `src/`, re-run `npm run build`
 | `npm run build` | Copy `src/` into `public/src/` and generate `public/config.js` from `.env` / process env |
 | `npm run dev` | Build, then run a local Cloudflare Pages server with Functions |
 | `npm test` | Run `node --test` checks (config, placeholders, secret scan) |
-| `npm run deploy` | Build and deploy to Cloudflare Pages — **manual, never run automatically** |
+| `npm run deploy` | Build + deploy to Cloudflare Pages with env vars from `.env` — **manual, never run automatically** |
 
 ## Environment variables
 

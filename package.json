@@ -7,7 +7,7 @@
   "scripts": {
     "build": "node scripts/build.mjs",
     "dev": "npm run build && wrangler pages dev",
-    "deploy": "npm run build && wrangler pages deploy",
+    "deploy": "npm run build && node scripts/deploy-pages.mjs",
     "test": "node --test"
   },
   "devDependencies": {

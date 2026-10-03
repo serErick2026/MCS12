@@ -72,4 +72,4 @@ prototype, repository `MCS12`). Read this file before making any change.
 | `npm run build` | Generate `public/src/` and `public/config.js` |
 | `npm run dev` | Local Pages server with Functions on port 8788 |
 | `npm test` | node:test checks including secret scan |
-| `npm run deploy` | Manual deployment — never run unprompted |
+| `npm run deploy` | Manual deployment (env vars injected via temporary config) — never run unprompted |
