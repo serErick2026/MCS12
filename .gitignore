@@ -1,0 +1,24 @@
+# Folders
+node_modules/
+venv/
+env/
+__pycache__/
+*.pyc
+dist/
+build/
+coverage/
+
+# IDE / editor
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs & local env
+*.log
+.env
+.env.local
