@@ -31,6 +31,18 @@ const fileEnv = await readDotEnv();
 const supabaseUrl = process.env.SUPABASE_URL || fileEnv.SUPABASE_URL || '';
 const supabaseAnonKey = process.env.SUPABASE_ANON_KEY || fileEnv.SUPABASE_ANON_KEY || '';
 
+const deployEnv = { ...process.env };
+if (!deployEnv.CLOUDFLARE_API_TOKEN && fileEnv.CLOUDFLARE_API_TOKEN) {
+  deployEnv.CLOUDFLARE_API_TOKEN = fileEnv.CLOUDFLARE_API_TOKEN;
+}
+if (deployEnv.CLOUDFLARE_API_TOKEN) {
+  delete deployEnv.CF_API_TOKEN;
+}
+if (!deployEnv.CLOUDFLARE_ACCOUNT_ID && fileEnv.CLOUDFLARE_ACCOUNT_ID) {
+  deployEnv.CLOUDFLARE_ACCOUNT_ID = fileEnv.CLOUDFLARE_ACCOUNT_ID;
+}
+deployEnv.WRANGLER_SEND_METRICS = 'false';
+
 if (!supabaseUrl || !supabaseAnonKey) {
   console.error('[deploy] SUPABASE_URL / SUPABASE_ANON_KEY missing in .env - aborting.');
   process.exit(1);
@@ -66,7 +78,7 @@ try {
     const child = spawn('npx.cmd', ['wrangler', 'pages', 'deploy', '--cwd', tempDir], {
       cwd: root,
       stdio: 'inherit',
-      env: process.env,
+      env: deployEnv,
       shell: true,
     });
     child.on('exit', (exitCode) => resolve(exitCode ?? 1));
