@@ -1,0 +1,3 @@
+-- Seed data is intentionally empty at initialization.
+-- Approved schema migrations are applied first from supabase/migrations/.
+-- All sample rows must be synthetic. Never insert real learner or personal data.

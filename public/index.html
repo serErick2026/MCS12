@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Community-Driven School Safety Intelligence and Notification System - research prototype" />
+  <meta name="theme-color" content="#0f172a" />
+  <title>School Safety Intelligence and Notification System</title>
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="icon" href="./assets/icon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="./src/styles/main.css" />
+  <script type="importmap">
+    {
+      "imports": {
+        "@supabase/supabase-js": "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2/+esm"
+      }
+    }
+  </script>
+  <script src="./config.js" defer></script>
+  <script type="module" src="./src/app.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <p class="badge">Research Prototype</p>
+    <h1>School Safety Intelligence and Notification System</h1>
+    <p class="subtitle">
+      Community-Driven School Safety Intelligence and Notification System Using
+      Incident Correlation and Multi-Criteria Risk Assessment
+    </p>
+  </header>
+
+  <main>
+    <section class="card" aria-labelledby="init-title">
+      <h2 id="init-title">Prototype initialized</h2>
+      <p>
+        Project infrastructure is in place. Application modules will be added
+        incrementally after approval.
+      </p>
+      <dl class="status-list">
+        <div>
+          <dt>Application</dt>
+          <dd><span class="status ok">Ready</span></dd>
+        </div>
+        <div>
+          <dt>Configuration</dt>
+          <dd><span id="config-status" class="status pending">Checking</span></dd>
+        </div>
+        <div>
+          <dt>Backend health</dt>
+          <dd><span id="api-status" class="status pending">Checking</span></dd>
+        </div>
+      </dl>
+    </section>
+
+    <section class="card" aria-labelledby="next-title">
+      <h2 id="next-title">Current phase</h2>
+      <p>Initialization only. No reporting, dashboard, correlation, risk scoring, or notification features are active yet.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>Prototype built on free-tier services. Not for production use.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,3 @@
+# Supabase CLI project configuration (local development).
+# Run `supabase init` locally if you need the full generated configuration.
+project_id = "school-safety-intelligence"

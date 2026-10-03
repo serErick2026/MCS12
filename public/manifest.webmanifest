@@ -1,0 +1,18 @@
+{
+  "name": "School Safety Intelligence and Notification System",
+  "short_name": "School Safety",
+  "description": "Community-Driven School Safety Intelligence and Notification System research prototype",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "icons": [
+    {
+      "src": "assets/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

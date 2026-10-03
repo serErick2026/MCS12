@@ -1,0 +1,19 @@
+{
+  "name": "school-safety-intelligence",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Community-Driven School Safety Intelligence and Notification System - research prototype",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "dev": "npm run build && wrangler pages dev",
+    "deploy": "npm run build && wrangler pages deploy",
+    "test": "node --test"
+  },
+  "devDependencies": {
+    "wrangler": "4.147.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
