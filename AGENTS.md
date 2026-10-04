@@ -15,8 +15,9 @@ prototype, repository `MCS12`). Read this file before making any change.
 
 ## 2. Phase discipline
 
-- Current approved phase: **initialization complete** (see
-  `docs/development-roadmap.md`).
+- Current approved phase: **Phase 2 — in progress, starting with the Git
+  workflow** (`docs/git-workflow.md`); Phase 1 initialization is complete
+  (see `docs/development-roadmap.md`).
 - Do not implement hazard reporting, dashboard, incident correlation, risk
   scoring, notifications, or analytics until explicitly approved.
 - No scope expansion without explicit approval.
@@ -68,6 +69,14 @@ prototype, repository `MCS12`). Read this file before making any change.
   results, and any unresolved decisions.
 - Stop at phase boundaries and wait for approval before starting the next
   module.
+- Git workflow (approved 2026-10-04): `main` is the stable production
+  branch — pushes/merges to `main` may trigger an automatic production
+  deployment on Cloudflare Pages. `feature/*` for approved functionality,
+  `fix/*` for bug fixes, no `develop` branch. All feature work goes through a
+  reviewed pull request before merging into `main`. Database migrations and
+  RLS policies require explicit human review. Full rules:
+  `docs/git-workflow.md`.
+- Do not create, merge, delete, or push branches without explicit approval.
 
 ## 6. Key commands
 
