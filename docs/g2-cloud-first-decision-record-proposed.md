@@ -223,9 +223,9 @@ or combine explicitly (e.g. "approve A3, A4").
 | A2 | Create dedicated DEV Supabase project (§7) | ⏹ superseded — target = existing MCS12 (Amendment A-01) | 2026-10-04 |
 | A3 | Remote CLI link (target amended to MCS12 per A-01) | ✅ approved 2026-10-04; **executed 2026-10-05** (linked `idytcuiecducelmwqrbo`, region ap-northeast-1) | 2026-10-05 |
 | A4 | Apply `0001_identity.sql` (target amended per A-01) | ✅ approved 2026-10-04; **executed 2026-10-05** (`db push` exit 0; history `local:0001 remote:0001`) | 2026-10-05 |
-| A5 | Seed/provision synthetic accounts | 🟡 partial — preparation authorized (D-A5-01); **M1 approved as D-A5-02; A5.1 implemented + locally validated 2026-10-05** (no remote calls); **execution (A5.2 preflight) still pending** | 2026-10-05 |
+| A5 | Seed/provision synthetic accounts | ✅ **executed 2026-10-05** — M1 approved (D-A5-02), A5.1 local validation (18/18), A5.2 live: dry-run → 5/5 provisioned → deferred suite **49/49 PASS** → post-state verified (5 accounts, no extras) | 2026-10-05 |
 | A6 | Cloudflare environment change (D-3) | ⬜ pending | — |
-| A7 | Production database activity (G-3) | ⬜ pending | — |
+| A7 | Production database activity (G-3) | 🟡 partial — **0002 applied 2026-10-05** under researcher "approve G-3 for 0002" (D-GATE-01 per-migration gate); first attempt rejected pre-apply (PG role targets nonexistent), remote verified unchanged, corrected per archive §8, post-verify clean; **later migrations remain pending** | 2026-10-05 |
 
 *Approver may combine A1–A7 only by listing the authorization numbers
 explicitly in one reply (e.g. "approve A1, A2"). Silence = no approval.*
@@ -251,7 +251,7 @@ linked project state, migration history, schema dumps in gitignored
 - **Scope:** close G-2 on: successful A3 link to MCS12, successful A4 application of `0001_identity.sql`, post-migration structural verification, anonymous access-denial results, existing automated test results
 - **Evidence basis:** link exit 0 (`project_ref idytcuiecducelmwqrbo`, region `ap-northeast-1`); `db push` exit 0; history `local:0001 remote:0001`; post-apply dump matches design v1.1 §3/§5.1/§8/§14 (table, 2 trigger functions, 2 triggers, RLS enabled, exactly 2 `authenticated` policies, scoped grants/revokes, FK→`auth.users` CASCADE); REST anon GET/POST → **HTTP 401 (42501)**; zero `anon` policies; `npm test` 5/5
 - **Limitations:** **no exhaustive security assurance** — verification covered structure and anonymous denial only
-- **Deferred work (four items retained):** (1) authenticated own-row access (2) role self-escalation prevention (3) display-name update (4) privileged backend access — all require provisioned synthetic users/credentials (A5)
+- **Deferred work (four items retained):** (1) authenticated own-row access (2) role self-escalation prevention (3) display-name update (4) privileged backend access — all require provisioned synthetic users/credentials (A5) — **ALL FOUR DISCHARGED 2026-10-05: 49/49 checks PASS across 5 identities (plan §12, A5 proposal §6); honest limit — officer row-scoping on risk tables pending first EX-07/O-01 seeding**
 - **Explicit non-authorizations:** no G-3 start, no user creation, no push/merge/deploy
 - **Next gate / exit criteria:** A5 preparation (D-A5-01); the four deferred tests discharge the remainder of G-2 verification once executed and reported
 
@@ -299,7 +299,7 @@ linked project state, migration history, schema dumps in gitignored
 
 ### SEC-01 — Credential Rotation Follow-up (formerly D-6)
 - **Approval status:** **OPEN** — rotation required, **not verified**
-- **Scope:** Supabase `sbp_*` access token and Cloudflare `cfut_IGYO*` token previously exposed in chat
+- **Scope:** Supabase `sbp_*` access token and Cloudflare `cfut_IGYO*` token previously exposed in chat; **plus two tokens pasted 2026-10-05 during A5.2 preparation: (a) a second `sbp_*` access token (mis-delivered, not stored, unusable as intended) and (b) the `service_role` JWT (stored only in gitignored `.env` for A5.2 runtime use; chat-exposure requires key rotation after A5.2 — Supabase Dashboard → Settings → API → rotate)** — all require rotation
 - **Evidence basis:** none — no rotation evidence exists
 - **Limitations:** values will not be printed, copied, or requested; rotation may not be claimed complete without independent verification (e.g., old token rejected)
 - **Next gate / exit criteria:** independent verification closes SEC-01

@@ -227,7 +227,7 @@ export async function provision({ url, serviceRoleKey, mode, fetchImpl, log }) {
             apikey: cfg.serviceRoleKey,
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ username: ident.email, password }),
+          body: JSON.stringify({ email: ident.email, password }),
         });
         await requireOk(loginRes, `sign-in verify ${ident.email}`);
         summary.signInVerified.push(ident.email);

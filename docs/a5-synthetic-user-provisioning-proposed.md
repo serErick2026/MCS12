@@ -1,11 +1,13 @@
-# A5 Synthetic-User Provisioning — EX-09 Credential Mechanism (M1 APPROVED — D-A5-02)
+# A5 Synthetic-User Provisioning — EX-09 Credential Mechanism (COMPLETE)
 
-**Status:** M1 mechanism **approved as D-A5-02** (2026-10-05). **A5.1
-COMPLETE: script `scripts/provision-synthetic.mjs` implemented + locally
-validated under mocked API (18/18 tests, secret scan clean).** NO users
-created; NO remote API calls; NO SQL; NO credentials requested or
-committed; worktree changes uncommitted. **A5.2 execution preflight
-remains a separate, unapproved gate (§6).**
+**Status:** **A5 EXECUTED 2026-10-05.** M1 approved (D-A5-02) → A5.1
+script + mocked validation (18/18) → **A5.2 live: dry-run, provisioned
+5/5 synthetic users + profiles (idempotent reuse verified), deferred
+suite 49/49 PASS, post-state integrity confirmed (exactly 5 accounts,
+display names restored, no extras).** Runtime credential lives only in
+gitignored `.env` but was chat-exposed → **rotation required (SEC-01).**
+All preflight steps in §6 completed; G-2's four deferred items
+discharged (reported, this document).
 
 ## 1. Purpose and scope
 
@@ -112,10 +114,13 @@ approved and the script authored + statically reviewed; (2) capture
 pre-state (read-only dump); (3) provision the five users; (4) run the
 four deferred tests + auth sanity; (5) discard passwords, record
 outcomes; (6) deliver a results report (actual results, no overclaiming);
-(7) confirm worktree clean of secrets. **Step (1) is done (A5.1,
-2026-10-05): mechanism approved (D-A5-02), script authored + statically
-reviewed + locally validated against mocked API. Steps (2)–(7) await the
-A5.2 preflight approval.**
+(7) confirm worktree clean of secrets. **All steps (1)–(7) COMPLETED
+2026-10-05:** mechanism approved (D-A5-02), script authored + mocked
+validated (A5.1), pre-state export + read-only dry-run, 5/5 provisioned,
+four deferred tests + auth sanity executed (49/49 PASS; actual results
+in plan §12 and this status header), passwords discarded after use,
+worktree secret-scanned. **Remaining follow-up: rotate the chat-exposed
+service-role key (SEC-01).**
 
 ## 7. Non-authorizations (this proposal)
 
@@ -127,6 +132,8 @@ Cloudflare/app changes · G-2 remains closed with four items deferred.
 
 ## 8. Exit criteria / next gate
 
-**Next gate:** human approval of the **A5.2 execution preflight**
-(pre-state read-only dump → provision five users → four deferred tests
-reported → G-2 verification fully discharged per D-G2-02).
+**Met 2026-10-05:** five users provisioned → four deferred tests
+executed + reported (49/49) → G-2 verification fully discharged per
+D-G2-02. **Open follow-ups:** SEC-01 key rotation (independently
+verify old key rejected), risk-table officer row-scoping retest at
+first EX-07/O-01 seeding.

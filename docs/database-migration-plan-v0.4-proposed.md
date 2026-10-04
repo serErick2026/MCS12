@@ -146,23 +146,24 @@ D-A5-01; G-2 closed under D-G2-02.
 - [x] G-2.1 link + G-2.2 apply executed (2026-10-05); G-2.3 partial
 - [x] **G-2 CLOSED** (D-G2-02, 2026-10-05) — four verification items deferred
 - [x] A5.1 provisioning script implemented + locally validated (D-A5-02, 2026-10-05; mocked API, 18/18)
-- [ ] A5.2 execution preflight approved (D-A5-01; M1 approved via D-A5-02)
-- [ ] Four deferred verification tests executed (own-row, escalation, display-name, backend)
-- [x] M2 `0002_reference.sql` drafted + statically reviewed (D-M2-01, 2026-10-05; uncommitted — apply awaits revised G-3)
+- [x] A5.2 execution preflight approved + executed (researcher 2026-10-05; dry-run → provision → verify, exit 0)
+- [x] Four deferred verification tests executed — **49/49 PASS** (own-row, escalation-blocked 403, display-name update+restore, admin-API/insert denied; ×5 identities; anon 401 ×4; wrong-password 400 ×5). *Honest limit: officer row-scoping on risk tables not distinguishable while tables are empty (EX-07/O-01) — retest at first seeding.*
+- [x] M2 `0002_reference.sql` drafted + statically reviewed (D-M2-01, 2026-10-05)
+- [x] M2 applied via revised G-3 (researcher approval 2026-10-05; pre-state export profiles-only/schema-only; first attempt rejected pre-apply on nonexistent PG role targets — remote unchanged — corrected to archive §8 `TO authenticated` posture + active-profiles role predicate; push exit 0, history `local:0002 remote:0002`)
 - [ ] SEC-01 token rotation independently verified
 - [ ] Free-tier [VERIFY] items confirmed in console (D-8)
 - [ ] A-04 assertion framework chosen (D-7)
 - [ ] EX-08 architecture doc scheduled pre-module
 - [ ] O-01 confirmation scheduled (before shared seeding)
 - [ ] EX-05 decision scheduled (before G-4/real data)
-- [ ] Export/backup check confirmed before each revised-G-3 apply
+- [x] Export/backup check confirmed before each revised-G-3 apply (0002: pre-apply export `supabase/.temp/pre-g3-0002-export.sql`, 2026-10-05)
 
 ## 13. Current execution state (updated 2026-10-05)
 
 **Done:** A3 link and A4 application of `0001_identity.sql` to the MCS12
 project (production-associated), with structural and anonymous-denial
 verification; G-2 closed (D-G2-02).
-**Not done:** applying M2–M8 (M2 drafted 2026-10-05, uncommitted);
+**Not done:** applying M3–M8 (M1+M2 applied 2026-10-05);
 user provisioning/seeding; pushes,
 merges, deploys; Cloudflare changes; `0001_identity.sql` and
 `docs/database-design.md` (v1.1) untouched since `39f420c`; no

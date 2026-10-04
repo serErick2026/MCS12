@@ -22,11 +22,12 @@ begins. The current approved phase is:
   **G-2 closed (2026-10-05)** — see
   `docs/g2-cloud-first-decision-record-proposed.md` (D-G2-02); four
   authenticated-path verification items deferred
-- Next: **A5.1 done** (M1 approved D-A5-02; `provision-synthetic.mjs` +
-  mocked validation, 18/18, uncommitted) → A5.2 execution-preflight
-  approval → deferred tests; M2 `0002_reference.sql`
-  **drafted (2026-10-05, uncommitted)** → acceptance + revised-G-3 apply
-  approval; SEC-01 token rotation verification
+- Next: **A5 COMPLETE** (provisioned 5/5 synthetic users 2026-10-05;
+  deferred suite 49/49; G-2 verification discharged) — follow-ups:
+  rotate chat-exposed service-role key (SEC-01) + `sbp_*` tokens, and
+  retest risk-table officer scoping at first EX-07/O-01 seeding;
+  **M2 applied** (G-3, 2026-10-05); M3+ migrations next, each under
+  per-migration G-3
 
 ## Phase 2+ — Application modules (not started)
 

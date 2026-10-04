@@ -8,9 +8,13 @@
 -- Plan:      docs/database-migration-plan-v0.4-proposed.md — stage M2.
 -- Authority: D-M2-01 (2026-10-05) — drafting + static review only.
 --
--- STATUS: DRAFT — NOT APPLIED, NOT EXECUTED. Applying requires the
--- revised G-3 gate (per-migration human approval + export/backup check,
--- D-GATE-01). No database connection was made producing this file.
+-- STATUS: APPLIED to MCS12 (idytcuiecducelmwqrbo) 2026-10-05 under the
+-- revised G-3 gate (D-GATE-01; researcher approval "approve G-3 for
+-- 0002"). First attempt was rejected pre-apply (policies targeted
+-- nonexistent PG roles); remote remained unchanged (verified by
+-- re-export), then corrected to the archive §8 posture: all policies
+-- `TO authenticated` with an active-profiles role predicate. No custom
+-- JWT claims; no PG roles created.
 --
 -- Scope (D-M2-01): four reference tables + RLS + grants/revokes +
 -- updated_at triggers. EMPTY TABLES ONLY — EX-07: placeholder values are
@@ -104,8 +108,15 @@ alter table public.risk_criteria enable row level security;
 create policy "risk_criteria: officer select"
 on public.risk_criteria
 for select
-to safety_officer, administrator
-using (true);
+to authenticated
+using (
+    exists (
+        select 1 from public.profiles p
+        where p.id = auth.uid()
+          and p.role in ('safety_officer', 'administrator')
+          and p.is_active = true
+    )
+);
 
 -- 5. risk_thresholds (design §5.2; values deferred D-08/O-02) -----------
 create table public.risk_thresholds (
@@ -128,8 +139,15 @@ alter table public.risk_thresholds enable row level security;
 create policy "risk_thresholds: officer select"
 on public.risk_thresholds
 for select
-to safety_officer, administrator
-using (true);
+to authenticated
+using (
+    exists (
+        select 1 from public.profiles p
+        where p.id = auth.uid()
+          and p.role in ('safety_officer', 'administrator')
+          and p.is_active = true
+    )
+);
 
 -- 6. Scoped revokes + minimal grants (design v1.1 §14 C-01; §8) ---------
 -- Controlled configuration: client roles read only; writes are
@@ -146,8 +164,8 @@ grant all on table public.risk_thresholds to service_role;
 
 grant select on table public.report_categories to authenticated;
 grant select on table public.locations to authenticated;
-grant select on table public.risk_criteria to safety_officer, administrator;
-grant select on table public.risk_thresholds to safety_officer, administrator;
+grant select on table public.risk_criteria to authenticated;
+grant select on table public.risk_thresholds to authenticated;
 
 -- 7. Documentation comments (traceability) ------------------------------
 comment on table public.report_categories is
@@ -163,9 +181,9 @@ comment on policy "report_categories: authenticated select" on public.report_cat
 comment on policy "locations: authenticated select" on public.locations is
     'Design v1.1 §8 — authenticated reads; zero anon policies (V-06); writes service_role only.';
 comment on policy "risk_criteria: officer select" on public.risk_criteria is
-    'Design v1.1 §8 — role-scoped reads (safety_officer/administrator); writes service_role only.';
+    'Design v1.1 §8 — role-scoped reads: TO authenticated + active profiles.role in (safety_officer, administrator); no custom JWT claims or PG roles (archive §8 posture); writes service_role only.';
 comment on policy "risk_thresholds: officer select" on public.risk_thresholds is
-    'Design v1.1 §8 — role-scoped reads (safety_officer/administrator); writes service_role only.';
+    'Design v1.1 §8 — role-scoped reads: TO authenticated + active profiles.role in (safety_officer, administrator); no custom JWT claims or PG roles (archive §8 posture); writes service_role only.';
 
 -- End of stage M2 (empty tables). Verification targets (plan §5, M2):
 --   role scoping of risk_criteria/risk_thresholds reads; authenticated
