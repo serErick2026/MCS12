@@ -26,6 +26,11 @@ prototype, repository `MCS12`). Read this file before making any change.
 
 - Never hardcode credentials. Use placeholders only; never invent project IDs,
   URLs, API keys, or account details.
+- **Approved exception:** `wrangler.toml` `[vars]` carries the Supabase
+  `SUPABASE_URL` and publishable/anon key. Cloudflare Pages treats
+  `wrangler.toml` as the source of truth for Git builds, and the anon key is
+  public by design (also shipped in `public/config.js`), protected by Row
+  Level Security. The service_role key must never appear in any file.
 - Never expose the Supabase service role key, database passwords, or secrets
   in `src/`, `public/`, or any client bundle. Browser code may use only the
   publishable/anon key.

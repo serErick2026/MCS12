@@ -1,4 +1,11 @@
-# Cloudflare Pages project configuration (read by wrangler pages dev / pages deploy)
+# Cloudflare Pages project configuration (read by wrangler pages dev / pages deploy,
+# and by Cloudflare Pages Git builds - wrangler.toml is the source of truth for env vars)
 name = "school-safety-intelligence"
 compatibility_date = "2026-10-01"
 pages_build_output_dir = "public"
+
+# Publishable/anon key only (public by design, protected by Row Level Security).
+# Never put the service_role key or database credentials here.
+[vars]
+SUPABASE_URL = "https://idytcuiecducelmwqrbo.supabase.co"
+SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlkeXRjdWllY2R1Y2VsbXdxcmJvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEwNTU0ODIsImV4cCI6MjEwNjYzMTQ4Mn0.X9OLcdpzFziiJW5zoRJEdROys2H0DaHBp4qk9U3pHe8"

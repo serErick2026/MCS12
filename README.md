@@ -42,8 +42,8 @@ No paid services, paid APIs, paid libraries, or subscriptions.
 │   └── styles/main.css
 ├── functions/api/health.js  Pages Function -> GET /api/health
 ├── scripts/build.mjs        copies src/ and writes public/config.js from .env
-├── scripts/deploy-pages.mjs deploys via wrangler using a temporary config that
-│                            carries .env values (temp config is never committed)
+├── scripts/deploy-pages.mjs runs wrangler pages deploy, loading Cloudflare
+│                            credentials from .env (never committed)
 ├── supabase/                config.toml, migrations/, seed.sql
 ├── tests/                   node:test checks
 ├── .env.example             environment variable documentation
@@ -87,7 +87,7 @@ http://localhost:8788. After editing files in `src/`, re-run `npm run build`
 | `npm run build` | Copy `src/` into `public/src/` and generate `public/config.js` from `.env` / process env |
 | `npm run dev` | Build, then run a local Cloudflare Pages server with Functions |
 | `npm test` | Run `node --test` checks (config, placeholders, secret scan) |
-| `npm run deploy` | Build + deploy to Cloudflare Pages with env vars from `.env` — **manual, never run automatically** |
+| `npm run deploy` | Build + manual deploy to Cloudflare Pages (Cloudflare creds from `.env`) — **never run automatically** |
 
 ## Environment variables
 
@@ -98,11 +98,13 @@ Documented in `.env.example`. Copy it to `.env` (gitignored).
 | `SUPABASE_URL` | Browser (via generated `public/config.js`) | Supabase project URL |
 | `SUPABASE_ANON_KEY` | Browser (via generated `public/config.js`) | Publishable/anon key — safe for clients |
 | `SUPABASE_SERVICE_ROLE_KEY` | Backend secrets only | Privileged key; never shipped to the browser |
+| `CLOUDFLARE_API_TOKEN` | `scripts/deploy-pages.mjs` | Pages Edit token for manual deploys |
+| `CLOUDFLARE_ACCOUNT_ID` | `scripts/deploy-pages.mjs` | Target Cloudflare account |
 
-On Cloudflare Pages, set these as **build-time environment variables** in the
-dashboard (`Settings > Environment variables`) so `scripts/build.mjs` can bake
-them into `public/config.js`. Use **Functions secrets** for any Worker-side
-secrets. Local equivalents: `.env` for the build, `.dev.vars` for Functions.
+**Source of truth:** `wrangler.toml` `[vars]` carries `SUPABASE_URL` and
+`SUPABASE_ANON_KEY`. Cloudflare Pages Git builds read `wrangler.toml` directly
+and will overwrite any dashboard-entered values, so keep them there. Local
+builds read the same values from `.env`; local Functions read `.dev.vars`.
 
 ## Cloudflare setup (manual)
 
@@ -110,8 +112,9 @@ secrets. Local equivalents: `.env` for the build, `.dev.vars` for Functions.
 2. Create a Pages project (e.g. `school-safety-intelligence`), connect the
    GitHub repository `serErick2026/MCS12`, or use `npm run deploy` with wrangler.
 3. Build command: `npm run build` · Build output directory: `public`.
-4. Add `SUPABASE_URL` and `SUPABASE_ANON_KEY` as environment variables.
-5. Deployment is manual — no automatic deploys are configured.
+4. Supabase vars come from `wrangler.toml` `[vars]` (no dashboard entry needed).
+5. Deployment: pushing to `main` triggers a Pages Git build; `npm run deploy`
+   performs a manual deployment.
 
 ## Supabase setup (manual)
 

@@ -34,9 +34,21 @@ test('wrangler.toml targets the Pages build output directory', async () => {
 });
 
 test('no secrets are committed', async () => {
-  const files = ['package.json', 'wrangler.toml', 'public/index.html', 'src/services/supabase.js', 'functions/api/health.js'];
+  const files = ['package.json', 'public/index.html', 'src/services/supabase.js', 'functions/api/health.js'];
   for (const file of files) {
     const content = await read(file);
     assert.doesNotMatch(content, /eyJhbGciOi|service_role_key\s*[:=]\s*["'][^"']+["']/i, `${file} appears to contain a secret`);
   }
+});
+
+test('wrangler.toml [vars] contains only the publishable anon key', async () => {
+  const toml = await read('wrangler.toml');
+  assert.doesNotMatch(toml, /service_role/i, 'service_role key must never appear in wrangler.toml');
+
+  const match = toml.match(/SUPABASE_ANON_KEY\s*=\s*"(eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+)"/);
+  assert.ok(match, 'anon key missing from wrangler.toml [vars]');
+
+  const payload = JSON.parse(Buffer.from(match[1].split('.')[1], 'base64url').toString('utf8'));
+  assert.equal(payload.role, 'anon', 'wrangler.toml key must have role=anon');
+  assert.equal(payload.iss, 'supabase');
 });
