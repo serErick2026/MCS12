@@ -1,15 +1,15 @@
-# Document 04 — Database Design Specification, Version 1.1
+# Document 04 — Database Design Specification, Version 1.1 (CANDIDATE)
 
-**Status:** **APPROVED DESIGN BASELINE, Version 1.1** — approved
-**October 4, 2026** by human authorization (promotion of the v1.1 candidate;
-see `docs/database-design-approval-record-v1.1-proposed.md`). Supersedes
-Version 1.0, archived at `docs/database-design-archive-v1.0.md`.
+**Status:** **CANDIDATE — Version 1.1** (Draft, 2026-10-04). Consolidates
+Version 1.0 (Approved Design Baseline) with proposed amendments EX-01…EX-09.
+**NOT APPROVED.** This candidate does not amend `docs/database-design.md`
+(v1.0), which remains the approved baseline until a human approves this
+revision.
 
 **Branch:** `feature/database-schema`
-**Sources:** v1.0 approved baseline (`database-design-archive-v1.0.md`);
-amendments EX-01…EX-09 (`database-design-change-log-proposed.md` +
-`database-design-amendments-proposed.md`); plans v0.1–v0.3.
-**Companion documents:** this baseline is implemented per
+**Sources:** v1.0 approved baseline; `docs/database-design-amendments-proposed.md`;
+plans v0.1/v0.2.
+**Companion documents:** `docs/database-design-change-log-proposed.md`;
 `docs/database-migration-plan-v0.3-proposed.md`.
 
 ## 0. Amendment integration
@@ -295,5 +295,5 @@ v1.1 candidate added:
 
 | Version | Status |
 |---|---|
-| v1.0 | Approved Design Baseline (2026-10-04) — **archived at `docs/database-design-archive-v1.0.md`** |
-| **v1.1** | **APPROVED DESIGN BASELINE (current)** — approved 2026-10-04; consolidates EX-01…EX-09 including the availability/viewing/acknowledgment clarification |
+| v1.0 | Approved Design Baseline (2026-10-04) |
+| **v1.1 (candidate)** | Consolidates EX-01…EX-09 — **pending human approval** |
