@@ -145,9 +145,10 @@ D-A5-01; G-2 closed under D-G2-02.
 - [x] Cloud-First strategy approved (A1, 2026-10-04); A2 superseded (A-01)
 - [x] G-2.1 link + G-2.2 apply executed (2026-10-05); G-2.3 partial
 - [x] **G-2 CLOSED** (D-G2-02, 2026-10-05) — four verification items deferred
-- [ ] A5 execution preflight approved (D-A5-01; EX-09 mechanism resolved)
+- [x] A5.1 provisioning script implemented + locally validated (D-A5-02, 2026-10-05; mocked API, 18/18)
+- [ ] A5.2 execution preflight approved (D-A5-01; M1 approved via D-A5-02)
 - [ ] Four deferred verification tests executed (own-row, escalation, display-name, backend)
-- [ ] M2 `0002_reference.sql` drafted + statically reviewed (D-M2-01)
+- [x] M2 `0002_reference.sql` drafted + statically reviewed (D-M2-01, 2026-10-05; uncommitted — apply awaits revised G-3)
 - [ ] SEC-01 token rotation independently verified
 - [ ] Free-tier [VERIFY] items confirmed in console (D-8)
 - [ ] A-04 assertion framework chosen (D-7)
@@ -161,7 +162,8 @@ D-A5-01; G-2 closed under D-G2-02.
 **Done:** A3 link and A4 application of `0001_identity.sql` to the MCS12
 project (production-associated), with structural and anonymous-denial
 verification; G-2 closed (D-G2-02).
-**Not done:** migrations M2–M8; user provisioning/seeding; pushes,
+**Not done:** applying M2–M8 (M2 drafted 2026-10-05, uncommitted);
+user provisioning/seeding; pushes,
 merges, deploys; Cloudflare changes; `0001_identity.sql` and
 `docs/database-design.md` (v1.1) untouched since `39f420c`; no
 credentials committed; SEC-01 rotation unverified.

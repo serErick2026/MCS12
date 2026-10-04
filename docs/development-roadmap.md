@@ -22,9 +22,11 @@ begins. The current approved phase is:
   **G-2 closed (2026-10-05)** — see
   `docs/g2-cloud-first-decision-record-proposed.md` (D-G2-02); four
   authenticated-path verification items deferred
-- Next: A5 synthetic-user preparation (EX-09, D-A5-01) → deferred tests;
-  M2 `0002_reference.sql` drafting (D-M2-01); per-migration G-3 approvals
-  (revised per D-GATE-01); SEC-01 token rotation verification
+- Next: **A5.1 done** (M1 approved D-A5-02; `provision-synthetic.mjs` +
+  mocked validation, 18/18, uncommitted) → A5.2 execution-preflight
+  approval → deferred tests; M2 `0002_reference.sql`
+  **drafted (2026-10-05, uncommitted)** → acceptance + revised-G-3 apply
+  approval; SEC-01 token rotation verification
 
 ## Phase 2+ — Application modules (not started)
 

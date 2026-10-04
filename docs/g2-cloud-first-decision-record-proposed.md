@@ -223,7 +223,7 @@ or combine explicitly (e.g. "approve A3, A4").
 | A2 | Create dedicated DEV Supabase project (§7) | ⏹ superseded — target = existing MCS12 (Amendment A-01) | 2026-10-04 |
 | A3 | Remote CLI link (target amended to MCS12 per A-01) | ✅ approved 2026-10-04; **executed 2026-10-05** (linked `idytcuiecducelmwqrbo`, region ap-northeast-1) | 2026-10-05 |
 | A4 | Apply `0001_identity.sql` (target amended per A-01) | ✅ approved 2026-10-04; **executed 2026-10-05** (`db push` exit 0; history `local:0001 remote:0001`) | 2026-10-05 |
-| A5 | Seed/provision synthetic accounts | ⬜ pending — **preparation only** authorized by D-A5-01; execution requires separate preflight | — |
+| A5 | Seed/provision synthetic accounts | 🟡 partial — preparation authorized (D-A5-01); **M1 approved as D-A5-02; A5.1 implemented + locally validated 2026-10-05** (no remote calls); **execution (A5.2 preflight) still pending** | 2026-10-05 |
 | A6 | Cloudflare environment change (D-3) | ⬜ pending | — |
 | A7 | Production database activity (G-3) | ⬜ pending | — |
 
@@ -263,6 +263,15 @@ linked project state, migration history, schema dumps in gitignored
 - **Deferred work:** A5 execution — separate preflight, separate approval
 - **Explicit non-authorizations:** creating or seeding users; disclosing credentials; running authenticated tests
 - **Next gate / exit criteria:** A5 execution preflight approved → users provisioned → four deferred tests executed and reported
+
+### D-A5-02 — EX-09 Credential Mechanism (M1) + A5.1 Local Implementation
+- **Approval status:** APPROVED — mechanism M1 (repo admin script + runtime-only service-role key) selected for EX-09 (2026-10-05)
+- **Scope:** author `scripts/provision-synthetic.mjs` (five fixed `.invalid` identities, fixed UUIDs, fail-closed target/config/state checks, idempotent reuse, redaction) and validate locally under mocked API
+- **Evidence basis:** `tests/provision-synthetic.test.js` (13 mocked tests) + full suite 18/18 + build OK + secret scan clean + diff scope review; A5 proposal §3–§5
+- **Limitations:** LOCAL ONLY — no login, no remote API calls, no users created, no SQL, no credentials disclosed or committed
+- **Deferred work:** A5.2 execution preflight (pre-state dump → real provisioning → four deferred tests)
+- **Explicit non-authorizations:** remote mutation; credential rotation; commits/push
+- **Next gate / exit criteria:** human approval of A5.2 preflight → execution → G-2 verification fully discharged
 
 ### D-DOC-01 — Documentation Commit
 - **Approval status:** APPROVED (2026-10-05) — one documentation-only commit on `feature/database-schema`; **no push**
