@@ -150,6 +150,7 @@ D-A5-01; G-2 closed under D-G2-02.
 - [x] Four deferred verification tests executed — **49/49 PASS** (own-row, escalation-blocked 403, display-name update+restore, admin-API/insert denied; ×5 identities; anon 401 ×4; wrong-password 400 ×5). *Honest limit: officer row-scoping on risk tables not distinguishable while tables are empty (EX-07/O-01) — retest at first seeding.*
 - [x] M2 `0002_reference.sql` drafted + statically reviewed (D-M2-01, 2026-10-05)
 - [x] M2 applied via revised G-3 (researcher approval 2026-10-05; pre-state export profiles-only/schema-only; first attempt rejected pre-apply on nonexistent PG role targets — remote unchanged — corrected to archive §8 `TO authenticated` posture + active-profiles role predicate; push exit 0, history `local:0002 remote:0002`)
+- [x] M3 `0003_reporting.sql` drafted + statically validated (2026-10-05, continuous-dev protocol; **not applied** — awaits separate G-3 approval)
 - [ ] SEC-01 token rotation independently verified
 - [ ] Free-tier [VERIFY] items confirmed in console (D-8)
 - [ ] A-04 assertion framework chosen (D-7)
