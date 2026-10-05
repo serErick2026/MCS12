@@ -22,11 +22,11 @@ begins. The current approved phase is:
   **G-2 closed (2026-10-05)** — see
   `docs/g2-cloud-first-decision-record-proposed.md` (D-G2-02); four
   authenticated-path verification items deferred
-- Next: **M3 `0003_reporting.sql` drafted** (2026-10-05, static checks
-  clean, 18/18) → **awaiting separate G-3 approval to apply**; SEC-01
-  rotation pending researcher (dashboard) → then rejection verification;
-  EX-07/O-01 candidate reference values (researcher input); D-7/A-04
-  assertion framework; M4–M8 follow per-migration G-3
+- Next: **M3 APPLIED + VERIFIED** (2026-10-05: history `0003/0003`,
+  assertions A–H PASS, REST 17/17, M1/M2 intact) → **M4
+  `0004_correlation.sql` drafting** (plan §14) → G-3 approval → apply;
+  EX-07/O-01 candidates + D-8 checklist **awaiting researcher review**;
+  SEC-01 rotation **awaiting researcher** (then rejection verification)
 
 ## Phase 2+ — Application modules (not started)
 

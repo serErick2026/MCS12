@@ -150,7 +150,11 @@ D-A5-01; G-2 closed under D-G2-02.
 - [x] Four deferred verification tests executed — **49/49 PASS** (own-row, escalation-blocked 403, display-name update+restore, admin-API/insert denied; ×5 identities; anon 401 ×4; wrong-password 400 ×5). *Honest limit: officer row-scoping on risk tables not distinguishable while tables are empty (EX-07/O-01) — retest at first seeding.*
 - [x] M2 `0002_reference.sql` drafted + statically reviewed (D-M2-01, 2026-10-05)
 - [x] M2 applied via revised G-3 (researcher approval 2026-10-05; pre-state export profiles-only/schema-only; first attempt rejected pre-apply on nonexistent PG role targets — remote unchanged — corrected to archive §8 `TO authenticated` posture + active-profiles role predicate; push exit 0, history `local:0002 remote:0002`)
-- [x] M3 `0003_reporting.sql` drafted + statically validated (2026-10-05, continuous-dev protocol; **not applied** — awaits separate G-3 approval)
+- [x] M3 `0003_reporting.sql` drafted + statically validated (2026-10-05, continuous-dev protocol)
+- [x] **M3 applied via G-3** (researcher approval 2026-10-05; fresh pre-apply export verified 5-table/no-reports/0-secrets; push exit 0; history `local:0003 remote:0003`; pre/post diff = 89 added lines all `reports`-scoped, **0 removed**; SQL assertions A–H PASS remotely; REST checks 17/17)
+- [x] D-7/A-04 decision: **plain-SQL assertions approved** (2026-10-05) — framework at `tests/sql/assert_<stage>.sql`, first file `assert_0003_reporting.sql` (passes)
+- [x] D-8 console verification checklist prepared (`docs/d8-console-verification-checklist-proposed.md`)
+- [x] EX-07/O-01 candidate values prepared for review (`docs/ex07-reference-values-candidates-proposed.md` — **not seeded**)
 - [ ] SEC-01 token rotation independently verified
 - [ ] Free-tier [VERIFY] items confirmed in console (D-8)
 - [ ] A-04 assertion framework chosen (D-7)
@@ -161,11 +165,58 @@ D-A5-01; G-2 closed under D-G2-02.
 
 ## 13. Current execution state (updated 2026-10-05)
 
-**Done:** A3 link and A4 application of `0001_identity.sql` to the MCS12
-project (production-associated), with structural and anonymous-denial
-verification; G-2 closed (D-G2-02).
-**Not done:** applying M3–M8 (M1+M2 applied 2026-10-05);
+**Done:** A3 link; A4 `0001_identity.sql`; G-2 closed (D-G2-02) with four
+items later discharged (A5.2, 49/49); A5 provisioning (5 synthetic users);
+M2 `0002_reference.sql` applied (G-3); **M3 `0003_reporting.sql` applied
+(G-3) + verified (assertions A–H, REST 17/17) 2026-10-05**; plain-SQL
+assertion framework (D-7/A-04) approved and first file passing.
+**Not done:** applying M4–M8;
 user provisioning/seeding; pushes,
 merges, deploys; Cloudflare changes; `0001_identity.sql` and
 `docs/database-design.md` (v1.1) untouched since `39f420c`; no
 credentials committed; SEC-01 rotation unverified.
+
+## 14. M4 preparation — `0004_correlation.sql` (drafting authorized; apply = separate G-3)
+
+**Scope (design v1.1 §5.4 = v1.0 §5.4, unchanged):**
+- `incidents`: `id` uuid PK (public reference — UUID is an identifier,
+  not an access credential, per O-09); `title` 1–120 internal;
+  `category_id` FK RESTRICT; `location_id` FK SET NULL; `status` default
+  `'open'` CHECK ∈ (open, investigating, contained, closed, invalid);
+  `severity` 1–5 internal; `first_reported_at`/`last_reported_at`
+  NOT NULL; `opened_by` FK→profiles SET NULL; `closed_at`; officer
+  `summary`; community publication fields (O-05/O-09):
+  `community_summary`, `community_guidance`,
+  `is_community_visible` NOT NULL default false,
+  `community_published_at`, `community_updated_at` — written only by
+  administrator/safety_officer **via backend**; `is_synthetic`;
+  timestamps. Indexes: `(status, created_at DESC)`, `(location_id)`,
+  `(category_id)`, partial `(is_community_visible) WHERE is_community_visible`.
+- `incident_reports`: `id` uuid PK; `incident_id` FK→incidents CASCADE
+  NOT NULL; `report_id` FK→reports CASCADE **UNIQUE** (1 report ↔ 1
+  incident); `link_method` ∈ (manual, auto) NOT NULL; `link_confidence`
+  0–1 nullable; `linked_by` FK→profiles SET NULL; `linked_at` default
+  now(). Index: `(incident_id)`.
+- **RLS (§8):** `SELECT` officer/administrator role-predicate (same
+  `TO authenticated` + active-profiles predicate pattern proven in M2);
+  **`INSERT`/`UPDATE` officer/administrator** (v1.0 §8: "backend is
+  primary path" — client policies are the backstop); **no `DELETE`
+  policy or grant** on either table; community publication fields are
+  written only by administrator/safety_officer **via backend**
+  (column-level handling to be specified in the M4 draft);
+  **zero anon policies** (V-06); members see incidents only through the
+  server-side community feed path (O-09/D-07).
+- **Dependencies:** `profiles` (M1), `report_categories`/`locations`
+  (M2), `reports` (M3), shared `set_updated_at()` (M2), role predicate
+  pattern (M2).
+
+**Verification plan (at G-3 time):** fresh pre-apply export; apply;
+pre/post diff must be additive-only; `tests/sql/assert_0004_correlation.sql`
+(structure, FK behaviours incl. CASCADE, partial index, privilege
+matrix, M1–M3 regression guards, 0 rows); REST: anon 401 ×6 tables,
+authenticated client writes denied on both new tables; officer-vs-member
+row-scoping **not observable until populated rows** (limitation noted).
+
+**Next step:** draft `supabase/migrations/0004_correlation.sql` +
+`tests/sql/assert_0004_correlation.sql` (local, authorized) → G-3 review
+→ approval → apply.

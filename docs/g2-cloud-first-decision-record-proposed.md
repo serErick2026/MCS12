@@ -225,7 +225,7 @@ or combine explicitly (e.g. "approve A3, A4").
 | A4 | Apply `0001_identity.sql` (target amended per A-01) | ✅ approved 2026-10-04; **executed 2026-10-05** (`db push` exit 0; history `local:0001 remote:0001`) | 2026-10-05 |
 | A5 | Seed/provision synthetic accounts | ✅ **executed 2026-10-05** — M1 approved (D-A5-02), A5.1 local validation (18/18), A5.2 live: dry-run → 5/5 provisioned → deferred suite **49/49 PASS** → post-state verified (5 accounts, no extras) | 2026-10-05 |
 | A6 | Cloudflare environment change (D-3) | ⬜ pending | — |
-| A7 | Production database activity (G-3) | 🟡 partial — **0002 applied 2026-10-05** under researcher "approve G-3 for 0002" (D-GATE-01 per-migration gate); first attempt rejected pre-apply (PG role targets nonexistent), remote verified unchanged, corrected per archive §8, post-verify clean; **later migrations remain pending** | 2026-10-05 |
+| A7 | Production database activity (G-3) | ✅ **0002 applied 2026-10-05** (first attempt rejected pre-apply, corrected, post-verified) **and 0003 applied 2026-10-05** (fresh backup 5-tables/no-reports, push exit 0, history `local:0003 remote:0003`, pre/post diff additive-only, SQL assertions A–H PASS, REST 17/17); later migrations remain gated per-migration | 2026-10-05 |
 
 *Approver may combine A1–A7 only by listing the authorization numbers
 explicitly in one reply (e.g. "approve A1, A2"). Silence = no approval.*
@@ -272,6 +272,13 @@ linked project state, migration history, schema dumps in gitignored
 - **Deferred work:** A5.2 execution preflight (pre-state dump → real provisioning → four deferred tests)
 - **Explicit non-authorizations:** remote mutation; credential rotation; commits/push
 - **Next gate / exit criteria:** human approval of A5.2 preflight → execution → G-2 verification fully discharged
+
+### D-A-04 — Assertion Framework (D-7 resolved)
+- **Approval status:** APPROVED (2026-10-05) — **plain-SQL assertions**
+- **Scope:** `tests/sql/assert_<stage>.sql` read-only scripts (psql `-v ON_ERROR_STOP=1`, `RAISE EXCEPTION` on failure); structural + privilege + regression guards; row-content assertions deferred until seeded data exists
+- **Evidence basis:** `tests/sql/assert_0003_reporting.sql` sections A–H PASS against the live MCS12 project (2026-10-05)
+- **Limitations:** read-only; cannot observe row-level RLS filtering on empty tables
+- **Next gate:** each future stage ships its assertion file with the migration draft
 
 ### D-DOC-01 — Documentation Commit
 - **Approval status:** APPROVED (2026-10-05) — one documentation-only commit on `feature/database-schema`; **no push**
