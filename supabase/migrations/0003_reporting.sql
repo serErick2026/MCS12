@@ -26,18 +26,9 @@
 --   * NO INSERT statements — this migration creates schema only.
 -- ------------------------------------------------------------------------
 
--- 1. updated_at maintenance trigger (design v1.1 §3 conventions) --------
-create or replace function public.set_updated_at()
-returns trigger
-language plpgsql
-as $$
-begin
-    new.updated_at := now();
-    return new;
-end;
-$$;
-
-revoke execute on function public.set_updated_at() from public, anon, authenticated;
+-- 1. updated_at trigger reuses public.set_updated_at() from 0002 (M2) —
+--    no M1/M2 objects are created, replaced, or altered by this file.
+-- ------------------------------------------------------------------------
 
 -- 2. reports (design §5.3) ----------------------------------------------
 create table public.reports (
