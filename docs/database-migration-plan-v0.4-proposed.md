@@ -220,3 +220,36 @@ row-scoping **not observable until populated rows** (limitation noted).
 **Next step:** draft `supabase/migrations/0004_correlation.sql` +
 `tests/sql/assert_0004_correlation.sql` (local, authorized) → G-3 review
 → approval → apply.
+
+**Status update (2026-10-05): DRAFT COMPLETE — NOT APPLIED.**
+- `supabase/migrations/0004_correlation.sql` (STATUS header DRAFT) +
+  `tests/sql/assert_0004_correlation.sql` written.
+- **O-05/O-09 resolved at schema level, no institutional question:**
+  the seven-field approved allowlist (§10.1) maps 1:1 onto
+  `incidents.id`/`status`/`community_summary`/`community_guidance`/
+  `community_published_at`/`community_updated_at` + category name + a
+  server-side generalized location; community columns are excluded from
+  every client column grant (backend-written only). Server-side
+  generalization logic belongs to the future feed endpoint
+  (already-approved O-09 rule), not this migration.
+- **Documented interpretations:** `category_id` nullable (spec omits
+  NOT NULL, unlike reports §5.3); `is_synthetic` boolean default false;
+  client INSERT excludes `id`/`opened_by`/`is_synthetic`/community_*;
+  client UPDATE excludes the same + timestamps; `incident_reports`
+  client UPDATE limited to `link_method`/`link_confidence` (re-linking
+  backend-only); no client `DELETE` anywhere.
+- **Ephemeral PG16 validation (throwaway container, destroyed):**
+  migrations 0001→0004 apply clean; `assert_0004` **ASSERT PASS A–H**
+  at 0-row state *and* re-run at post-test state; 11/11 functional
+  tests (officer INSERT/UPDATE succeed, member INSERT denied by RLS,
+  member sees 0 rows vs officer 1, community-column and `opened_by`
+  client writes → permission denied, client DELETE → permission denied
+  ×2 tables, officer link INSERT succeeds, duplicate `report_id` →
+  UNIQUE violation, member link INSERT → RLS violation, anon reads →
+  permission denied, category RESTRICT + report/incident CASCADE
+  verified).
+- Static checks: 0 `INSERT INTO`, 0 anon policies, 6 `TO authenticated`,
+  0 DROP, 0 secret patterns; `npm test` 18/18; build OK.
+- **G-3 for 0004: NOT yet requested/applied** (remote untouched; remote
+  history remains `0001/0002/0003`). Row-scoping on populated data +
+  REST 401 sweep remain post-apply items.
