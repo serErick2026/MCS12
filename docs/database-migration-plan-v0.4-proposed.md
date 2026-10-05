@@ -153,11 +153,13 @@ D-A5-01; G-2 closed under D-G2-02.
 - [x] M3 `0003_reporting.sql` drafted + statically validated (2026-10-05, continuous-dev protocol)
 - [x] **M3 applied via G-3** (researcher approval 2026-10-05; fresh pre-apply export verified 5-table/no-reports/0-secrets; push exit 0; history `local:0003 remote:0003`; pre/post diff = 89 added lines all `reports`-scoped, **0 removed**; SQL assertions A–H PASS remotely; REST checks 17/17)
 - [x] D-7/A-04 decision: **plain-SQL assertions approved** (2026-10-05) — framework at `tests/sql/assert_<stage>.sql`, first file `assert_0003_reporting.sql` (passes)
+- [x] **M4 `0004_correlation.sql` drafted + statically validated** (2026-10-05: scratch PG16, 0001→0004 apply clean, assert A–H PASS ×2, 11/11 functional tests, static checks 0 INSERT/0 anon/0 secrets)
+- [x] **M4 applied via G-3** (researcher approval 2026-10-05; pre-apply export `pre-g3-0004-export.sql` = 6 tables/7 policies; `db push` exit 0; history `local:0004 remote:0004`; post export `post-g3-0004-export.sql`; diff additive-only — 289 insertions all `incidents`/`incident_reports`-scoped, **0 real removals** (2 excluded lines are pg_dump run-specific `\restrict` guards); SQL assertions A–H PASS remotely; REST **32/32** incl. anon 401 ×8, member/officer client INSERT/DELETE denial, community-column lockdown 403 (member+officer), M1–M3 regressions, backend reads, 5-profile integrity)
 - [x] D-8 console verification checklist prepared (`docs/d8-console-verification-checklist-proposed.md`)
 - [x] EX-07/O-01 candidate values prepared for review (`docs/ex07-reference-values-candidates-proposed.md` — **not seeded**)
 - [ ] SEC-01 token rotation independently verified
 - [ ] Free-tier [VERIFY] items confirmed in console (D-8)
-- [ ] A-04 assertion framework chosen (D-7)
+- [x] A-04 assertion framework chosen (D-7)
 - [ ] EX-08 architecture doc scheduled pre-module
 - [ ] O-01 confirmation scheduled (before shared seeding)
 - [ ] EX-05 decision scheduled (before G-4/real data)
@@ -169,8 +171,10 @@ D-A5-01; G-2 closed under D-G2-02.
 items later discharged (A5.2, 49/49); A5 provisioning (5 synthetic users);
 M2 `0002_reference.sql` applied (G-3); **M3 `0003_reporting.sql` applied
 (G-3) + verified (assertions A–H, REST 17/17) 2026-10-05**; plain-SQL
-assertion framework (D-7/A-04) approved and first file passing.
-**Not done:** applying M4–M8;
+assertion framework (D-7/A-04) approved and first file passing;
+**M4 `0004_correlation.sql` applied (G-3) + verified 2026-10-05**
+(assertions A–H PASS remotely, REST 32/32, diff additive-only).
+**Not done:** applying M5–M8;
 user provisioning/seeding; pushes,
 merges, deploys; Cloudflare changes; `0001_identity.sql` and
 `docs/database-design.md` (v1.1) untouched since `39f420c`; no
@@ -253,3 +257,35 @@ row-scoping **not observable until populated rows** (limitation noted).
 - **G-3 for 0004: NOT yet requested/applied** (remote untouched; remote
   history remains `0001/0002/0003`). Row-scoping on populated data +
   REST 401 sweep remain post-apply items.
+
+**Execution record (2026-10-05): G-3 APPROVED + M4 APPLIED + VERIFIED.**
+- Researcher: "Approve G-3 for `0004_correlation.sql`."
+- Pre-apply export `supabase/.temp/pre-g3-0004-export.sql` (6 tables,
+  7 policies, no secrets); target verified `local:0001–0004 /
+  remote:0001–0003`; `supabase db push` exit 0.
+- Post-apply export `supabase/.temp/post-g3-0004-export.sql`
+  (8 tables, 13 policies); `git diff --no-index` pre→post: 289
+  insertions, **0 real removals** (2 excluded lines = pg_dump run-specific
+  `\restrict` guards); every added line and every `ALTER` targets
+  `incidents`/`incident_reports` only — existing DDL byte-identical
+  (M1–M3 intact at DDL level).
+- SQL assertions `tests/sql/assert_0004_correlation.sql` run remotely
+  (pooler, `ON_ERROR_STOP=1`): **ASSERT PASS A–H, exit 0**.
+- History recorded: `supabase migration list` → `local:0004 remote:0004`.
+- REST `scripts/m4-verify.mjs`: **32/32 PASS** — anon 401 ×8 tables;
+  member INSERT denial on both new tables (403); community-column
+  lockdown 403 for member *and* officer (O-05/O-09 live-proven);
+  no-client-DELETE 403 ×3; officer read path 200; M1 own-profile,
+  M2 reference reads, M3 reports read + write denials all intact;
+  admin API denied; service-role reads OK; exactly 5 profiles.
+- Honest limits: officer-vs-member row-scoping on populated rows not
+  observable (tables empty) — deferred to first seeded data; client
+  UPDATE with granted columns on empty tables returns 204 (inconclusive
+  by design) — officer summary-update and member-RLS-denial proven in
+  scratch PG16 validation instead.
+- `assert_0003_reporting.sql` not re-run as-is: its H4 hardcodes the
+  M3-era table count (6) — superseded for count purposes by
+  `assert_0004_correlation.sql` §H1 (expects 8); M1–M3 behavioral
+  regression covered by `m4-verify.mjs` checks.
+- `npm test` 18/18; build OK; no Cloudflare deploy (no app-code change).
+- Milestone committed + pushed.

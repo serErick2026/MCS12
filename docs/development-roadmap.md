@@ -22,12 +22,12 @@ begins. The current approved phase is:
   **G-2 closed (2026-10-05)** — see
   `docs/g2-cloud-first-decision-record-proposed.md` (D-G2-02); four
   authenticated-path verification items deferred
-- Next: **M4 DRAFT COMPLETE, NOT APPLIED** (2026-10-05:
-  `0004_correlation.sql` + `assert_0004_correlation.sql`; scratch PG16
-  11/11 functional tests + assertions PASS ×2, static checks clean —
-  plan §14) → researcher **G-3 approval for 0004** → apply + verify;
-  EX-07/O-01 candidates + D-8 checklist **awaiting researcher review**;
-  SEC-01 rotation **awaiting researcher** (then rejection verification)
+- Next: **M4 APPLIED + VERIFIED** (2026-10-05: history `local:0004
+  remote:0004`, SQL assertions A–H PASS remotely, REST 32/32, diff
+  additive-only — plan §14) → **M5 `0005_risk.sql` drafting** (plan §4/§5)
+  → G-3 approval → apply; EX-07/O-01 candidates + D-8 checklist
+  **awaiting researcher review**; SEC-01 rotation **awaiting researcher**
+  (then rejection verification)
 
 ## Phase 2+ — Application modules (not started)
 
